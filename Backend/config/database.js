@@ -8,8 +8,6 @@ mongoose.connect(process.env.DATABASE_HOST, {
     useUnifiedTopology: true,
 }).then(() => {
     console.log('Connected to database!');
-}).catch((err)=>{
-    console.log(err);
 });
 };
 
