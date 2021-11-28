@@ -2,6 +2,7 @@ const User =require("../models/userModel");
 const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const sendToken = require("../utils/jwtToken");
+const sendEmail = require("../utils/sendEmail");
 
 exports.registerUser= catchAsyncErrors(async(req,res,next)=>{
     const {name,email,password} =req.body;
@@ -48,7 +49,7 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
     const user = await User.findOne({ email: req.body.email });
   
     if (!user) {
-      return next(new ErrorHander("User not found", 404));
+      return next(new ErrorHandler("User not found", 404));
     }
   
     // Get ResetPassword Token
@@ -65,7 +66,7 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
     try {
       await sendEmail({
         email: user.email,
-        subject: `Ecommerce Password Recovery`,
+        subject: `Uphaar Password Recovery`,
         message,
       });
   
@@ -79,7 +80,7 @@ exports.forgotPassword = catchAsyncErrors(async (req, res, next) => {
   
       await user.save({ validateBeforeSave: false });
   
-      return next(new ErrorHander(error.message, 500));
+      return next(new ErrorHandler(error.message, 500));
     }
   });
   
